@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mystery Treasure Hunt</title>
+    <style>
+        /* Base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Cinzel', 'Times New Roman', serif;
+            background-color: #f4e9c9;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" opacity="0.1"><path fill="%23a52a2a" d="M50,0 C77.614,0 100,22.386 100,50 C100,77.614 77.614,100 50,100 C22.386,100 0,77.614 0,50 C0,22.386 22.386,0 50,0 Z" /></svg>');
+            color: #5c3a21;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* Parchment background effect */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(244, 233, 201, 0.8), rgba(212, 193, 149, 0.8)), 
+                        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" opacity="0.05"><path fill="%235c3a21" d="M0,0 L200,0 L200,200 L0,200 Z M10,10 L190,10 L190,190 L10,190 Z" /></svg>');
+            background-size: cover;
+            z-index: -1;
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.2);
+        }
+        
+        /* Main container */
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: rgba(244, 233, 201, 0.9);
+            border: 15px solid transparent;
+            border-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><path fill="%235c3a21" d="M0,0 L100,0 L100,100 L0,100 Z M10,10 L90,10 L90,90 L10,90 Z" /></svg>') 30 stretch;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            position: relative;
+            margin: 20px;
+        }
+        
+        /* Title styling */
+        h1 {
+            font-size: 3rem;
+            color: #8b4513;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+            position: relative;
+        }
+        
+        h1::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 3px;
+            background: linear-gradient(to right, transparent, #8b4513, transparent);
+        }
+        
+        /* Main clue text */
+        .clue {
+            font-size: 1.5rem;
+            margin: 30px 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            position: relative;
+            animation: pulse 3s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 5px 15px rgba(139, 69, 19, 0.3); }
+            50% { box-shadow: 0 5px 25px rgba(139, 69, 19, 0.6); }
+            100% { box-shadow: 0 5px 15px rgba(139, 69, 19, 0.3); }
+        }
+        
+        /* Hidden clue in CSS */
+        .hidden-clue {
+            color: #f4e9c9; /* Same as background */
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 12px;
+        }
+        
+        /* Interactive elements */
+        .interactive-area {
+            margin: 30px 0;
+            padding: 20px;
+            background: rgba(210, 180, 140, 0.5);
+            border-radius: 10px;
+            border: 2px dashed #8b4513;
+        }
+        
+        .button {
+            background: #8b4513;
+            color: #f4e9c9;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1.2rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Cinzel', serif;
+            margin: 10px;
+        }
+        
+        .button:hover {
+            background: #a0522d;
+            transform: scale(1.05);
+        }
+        
+        .secret-button {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            width: 30px;
+            height: 30px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            opacity: 0.1;
+        }
+        
+        .secret-button:hover {
+            opacity: 0.3;
+        }
+        
+        /* Treasure chest */
+        .treasure-chest {
+            width: 150px;
+            height: 100px;
+            background: #8b4513;
+            margin: 30px auto;
+            position: relative;
+            border-radius: 10px 10px 5px 5px;
+            cursor: pointer;
+            transition: transform 0.5s;
+        }
+        
+        .treasure-chest:hover {
+            transform: scale(1.1);
+        }
+        
+        .chest-lid {
+            width: 160px;
+            height: 20px;
+            background: #a0522d;
+            position: absolute;
+            top: -20px;
+            left: -5px;
+            border-radius: 10px 10px 0 0;
+            transition: transform 0.5s;
+            transform-origin: bottom;
+        }
+        
+        .treasure-chest.open .chest-lid {
+            transform: rotate(-45deg);
+        }
+        
+        .chest-lock {
+            width: 20px;
+            height: 20px;
+            background: #daa520;
+            border-radius: 50%;
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        /* Hidden message that appears */
+        .hidden-message {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(255, 215, 0, 0.2);
+            border: 1px solid #daa520;
+            border-radius: 5px;
+            font-style: italic;
+        }
+        
+        /* Fake clues */
+        .fake-clue {
+            margin: 20px 0;
+            padding: 10px;
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px dashed #ff0000;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            color: #5c3a21;
+        }
+        
+        /* Developer credit */
+        .developer-credit {
+            margin-top: 30px;
+            padding: 10px;
+            font-size: 0.9rem;
+            color: #8b4513;
+            font-style: italic;
+            border-top: 1px solid #8b4513;
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .clue {
+                font-size: 1.2rem;
+            }
+            
+            .container {
+                padding: 20px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .clue {
+                font-size: 1rem;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to the Treasure Hunt</h1>
+        <p class="subtitle">Uncover the secrets hidden in plain sight</p>
+        
+        <div class="clue">
+            Look deeper... the treasure is hidden where most people don't look.
+        </div>
+        
+        <div class="interactive-area">
+            <p>Some say the answer lies in the shadows, others claim it's written in invisible ink.</p>
+            <button class="button" id="hintButton">Request a Hint</button>
+            <div id="hintMessage" class="hidden-message">
+                Not all that glitters is gold. Sometimes the real path is hidden in plain sight.
+            </div>
+        </div>
+        
+        <div class="treasure-chest" id="treasureChest">
+            <div class="chest-lid">
+                <div class="chest-lock"></div>
+            </div>
+        </div>
+        
+        <div class="fake-clue">
+            <strong>Red Herring:</strong> The next clue is hidden under the old oak tree in the courtyard.
+        </div>
+        
+        <!-- FAKE CLUE: The real location is the library basement -->
+        
+        <button class="secret-button" id="secretButton"></button>
+        
+        <!-- HIDDEN CLUE: Next location: hod cabin -->
+        <div class="hidden-clue">Next location: hod cabin</div>
+        
+        <div class="developer-credit">
+            Developed by Swapnil Chougule
+        </div>
+    </div>
+
+    <script>
+        // Real clue hidden in console
+        console.log("%cWelcome, treasure hunter!", "color: #8b4513; font-size: 18px; font-weight: bold;");
+        console.log("%cBut beware! Not everything is as it seems...", "color: #a52a2a; font-style: italic;");
+        console.log("%cFAKE CLUE: The treasure is buried near the fountain.", "color: #ff0000;");
+        console.log("%cREAL CLUE: Next location: hod cabin", "color: #008000; font-weight: bold; background: #f0f0f0; padding: 5px;");
+        
+        // Interactive elements
+        document.addEventListener('DOMContentLoaded', function() {
+            // Hint button functionality
+            const hintButton = document.getElementById('hintButton');
+            const hintMessage = document.getElementById('hintMessage');
+            
+            hintButton.addEventListener('click', function() {
+                hintMessage.style.display = 'block';
+                setTimeout(() => {
+                    hintMessage.style.display = 'none';
+                }, 5000);
+            });
+            
+            // Treasure chest functionality
+            const treasureChest = document.getElementById('treasureChest');
+            let chestOpened = false;
+            
+            treasureChest.addEventListener('click', function() {
+                if (!chestOpened) {
+                    treasureChest.classList.add('open');
+                    chestOpened = true;
+                    
+                    // Show a message after chest opens
+                    setTimeout(() => {
+                        alert("The chest is empty! The real treasure is knowledge, and the clues are all around you.");
+                    }, 1000);
+                }
+            });
+            
+            // Secret button functionality (hidden in the corner)
+            const secretButton = document.getElementById('secretButton');
+            secretButton.addEventListener('click', function() {
+                alert("You found a secret button! But this isn't the real clue either. Keep searching!");
+            });
+            
+            // Easter egg: right-click detection
+            document.addEventListener('contextmenu', function(e) {
+                e.preventDefault();
+                alert("Right-clicking won't reveal the treasure! Try other methods of exploration.");
+            });
+        });
+    </script>
+    
+    <!-- FAKE HTML COMMENT: The next clue is in the garden shed -->
+</body>
+</html>
