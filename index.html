@@ -280,8 +280,8 @@
         
         <button class="secret-button" id="secretButton"></button>
         
-        <!-- HIDDEN CLUE: Next location: hod cabin -->
-        <div class="hidden-clue">Next location: hod cabin</div>
+        <!-- HIDDEN CLUE: Look in the console for the real clue! -->
+        <div class="hidden-clue">Look in the console for the real clue!</div>
         
         <div class="developer-credit">
             Developed by Swapnil Chougule
@@ -289,11 +289,18 @@
     </div>
 
     <script>
-        // Real clue hidden in console
+        // Real clue hidden in console - POETIC CLUE
         console.log("%cWelcome, treasure hunter!", "color: #8b4513; font-size: 18px; font-weight: bold;");
         console.log("%cBut beware! Not everything is as it seems...", "color: #a52a2a; font-style: italic;");
         console.log("%cFAKE CLUE: The treasure is buried near the fountain.", "color: #ff0000;");
-        console.log("%cREAL CLUE: Next location: Strict as a bell, with a stare so bold, Inside these walls, the rules are told. Not a palace, yet power within,Find your clue where discipline grins!"", "color: #008000; font-weight: bold; background: #f0f0f0; padding: 5px;");
+        console.log("%c════════════════════════════════════════", "color: #8b4513;");
+        console.log("%cREAL CLUE - SOLVE THIS RIDDLE:", "color: #008000; font-size: 16px; font-weight: bold;");
+        console.log("%cStrict as a bell, with a stare so bold,", "color: #5c3a21; font-size: 14px; font-style: italic;");
+        console.log("%cInside these walls, the rules are told.", "color: #5c3a21; font-size: 14px; font-style: italic;");
+        console.log("%cNot a palace, yet power within,", "color: #5c3a21; font-size: 14px; font-style: italic;");
+        console.log("%cFind your clue where discipline grins!", "color: #5c3a21; font-size: 14px; font-style: italic;");
+        console.log("%c════════════════════════════════════════", "color: #8b4513;");
+        console.log("%cHint: Think about places where rules are strictly followed...", "color: #8b4513; font-style: italic;");
         
         // Interactive elements
         document.addEventListener('DOMContentLoaded', function() {
@@ -319,7 +326,7 @@
                     
                     // Show a message after chest opens
                     setTimeout(() => {
-                        alert("The chest is empty! The real treasure is knowledge, and the clues are all around you.");
+                        alert("The chest is empty! The real treasure is knowledge, and the clues are all around you. Check the console for hints!");
                     }, 1000);
                 }
             });
@@ -327,13 +334,13 @@
             // Secret button functionality (hidden in the corner)
             const secretButton = document.getElementById('secretButton');
             secretButton.addEventListener('click', function() {
-                alert("You found a secret button! But this isn't the real clue either. Keep searching!");
+                alert("You found a secret button! But this isn't the real clue either. Try pressing F12 and checking the Console!");
             });
             
             // Easter egg: right-click detection
             document.addEventListener('contextmenu', function(e) {
                 e.preventDefault();
-                alert("Right-clicking won't reveal the treasure! Try other methods of exploration.");
+                alert("Right-clicking won't reveal the treasure! Try pressing F12 and exploring the Console tab.");
             });
         });
     </script>
