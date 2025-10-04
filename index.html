@@ -326,7 +326,7 @@
                     
                     // Show a message after chest opens
                     setTimeout(() => {
-                        alert("The chest is empty! The real treasure is knowledge, and the clues are all around you. Check the console for hints!");
+                        alert("The chest is empty! The real treasure is knowledge, and the clues are all around you. ");
                     }, 1000);
                 }
             });
@@ -334,13 +334,13 @@
             // Secret button functionality (hidden in the corner)
             const secretButton = document.getElementById('secretButton');
             secretButton.addEventListener('click', function() {
-                alert("You found a secret button! But this isn't the real clue either. Try pressing F12 and checking the Console!");
-            });
+                alert("You found a secret button! But this isn't the real clue either. ");
+
             
             // Easter egg: right-click detection
             document.addEventListener('contextmenu', function(e) {
                 e.preventDefault();
-                alert("Right-clicking won't reveal the treasure! Try pressing F12 and exploring the Console tab.");
+                alert("Right-clicking won't reveal the treasure! ");
             });
         });
     </script>
